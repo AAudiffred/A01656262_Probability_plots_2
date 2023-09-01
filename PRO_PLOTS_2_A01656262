@@ -1,0 +1,205 @@
+##### Exponential and Gamma Distributions
+
+library(fitdistrplus)
+library(ggplot2)
+
+set.seed(123)
+n <- 1000
+df <- 8 
+chi_sample <- rchisq(n, df = df)
+
+gamma_fit <- fitdist(chi_sample, "gamma", method = "mme")
+shape_est <- gamma_fit$estimate["shape"]
+rate_est <- gamma_fit$estimate["rate"]
+gamma_sample <- rgamma(n, shape = shape_est, rate = rate_est)
+
+hist(chi_sample, col = "blue", main = "Chi-Square Distribution", xlab = "Value", ylab = "Frequency")
+hist(gamma_sample, col = "green", main = "Fitted Gamma Distribution", xlab = "Value", ylab = "Frequency")
+
+mean_chi <- mean(chi_sample)
+var_chi <- var(chi_sample)
+mean_gamma <- mean(gamma_sample)
+var_gamma <- var(gamma_sample)
+
+cat("Mean of Chi-Square:", mean_chi, "\n")
+cat("Variance of Chi-Square:", var_chi, "\n")
+cat("Mean of Fitted Gamma:", mean_gamma, "\n")
+cat("Variance of Fitted Gamma:", var_gamma, "\n")
+
+hist(chi_sample, col = "blue", main = "Chi-Square Distribution", xlab = "Value", ylab = "Frequency")
+hist(gamma_sample, col = "green", main = "Fitted Gamma Distribution", xlab = "Value", ylab = "Frequency")
+
+x_seq <- seq(0, max(chi_sample, gamma_sample) + 5, by = 0.1)
+
+chi_pdf <- dchisq(x_seq, df = df)
+chi_cdf <- pchisq(x_seq, df = df)
+ggplot() +
+  geom_line(aes(x = x_seq, y = chi_pdf), color = "blue", linetype = "solid", size = 1) +
+  geom_line(aes(x = x_seq, y = chi_cdf), color = "blue", linetype = "dashed", size = 1) +
+  labs(title = "Chi-Square Distribution - PDF and CDF", x = "Value", y = "Density/Probability") +
+  theme_minimal()
+
+gamma_pdf <- dgamma(x_seq, shape = shape_est, rate = rate_est)
+gamma_cdf <- pgamma(x_seq, shape = shape_est, rate = rate_est)
+ggplot() +
+  geom_line(aes(x = x_seq, y = gamma_pdf), color = "green", linetype = "solid", size = 1) +
+  geom_line(aes(x = x_seq, y = gamma_cdf), color = "green", linetype = "dashed", size = 1) +
+  labs(title = "Fitted Gamma Distribution - PDF and CDF", x = "Value", y = "Density/Probability") +
+  theme_minimal()
+
+
+
+
+
+######### CHI AND GAMMA
+library(fitdistrplus)
+library(ggplot2)
+
+set.seed(123)
+n <- 1000
+df <- 8 
+chi_sample <- rchisq(n, df = df)
+
+gamma_fit <- fitdist(chi_sample, "gamma", method = "mme")
+shape_est <- gamma_fit$estimate["shape"]
+rate_est <- gamma_fit$estimate["rate"]
+gamma_sample <- rgamma(n, shape = shape_est, rate = rate_est)
+
+hist(chi_sample, col = "blue", main = "Chi-Square Distribution", xlab = "Value", ylab = "Frequency")
+hist(gamma_sample, col = "green", main = "Fitted Gamma Distribution", xlab = "Value", ylab = "Frequency")
+
+mean_chi <- mean(chi_sample)
+var_chi <- var(chi_sample)
+mean_gamma <- mean(gamma_sample)
+var_gamma <- var(gamma_sample)
+
+cat("Mean of Chi-Square:", mean_chi, "\n")
+cat("Variance of Chi-Square:", var_chi, "\n")
+cat("Mean of Fitted Gamma:", mean_gamma, "\n")
+cat("Variance of Fitted Gamma:", var_gamma, "\n")
+
+hist(chi_sample, col = "blue", main = "Chi-Square Distribution", xlab = "Value", ylab = "Frequency")
+hist(gamma_sample, col = "green", main = "Fitted Gamma Distribution", xlab = "Value", ylab = "Frequency")
+
+x_seq <- seq(0, max(chi_sample, gamma_sample) + 5, by = 0.1)
+
+chi_pdf <- dchisq(x_seq, df = df)
+chi_cdf <- pchisq(x_seq, df = df)
+ggplot() +
+  geom_line(aes(x = x_seq, y = chi_pdf), color = "blue", linetype = "solid", size = 1) +
+  geom_line(aes(x = x_seq, y = chi_cdf), color = "blue", linetype = "dashed", size = 1) +
+  labs(title = "Chi-Square Distribution - PDF and CDF", x = "Value", y = "Density/Probability") +
+  theme_minimal()
+
+gamma_pdf <- dgamma(x_seq, shape = shape_est, rate = rate_est)
+gamma_cdf <- pgamma(x_seq, shape = shape_est, rate = rate_est)
+ggplot() +
+  geom_line(aes(x = x_seq, y = gamma_pdf), color = "green", linetype = "solid", size = 1) +
+  geom_line(aes(x = x_seq, y = gamma_cdf), color = "green", linetype = "dashed", size = 1) +
+  labs(title = "Fitted Gamma Distribution - PDF and CDF", x = "Value", y = "Density/Probability") +
+  theme_minimal()
+
+
+
+
+
+
+
+######### GAMMA AND BETA
+
+library(fitdistrplus)
+library(ggplot2)
+
+set.seed(123) 
+n <- 1000
+shape_parameter <- 2
+
+gamma_samples <- rgamma(n, shape = shape_parameter, scale = 1)
+
+beta_shape1 <- shape_parameter
+beta_shape2 <- shape_parameter
+
+beta_samples <- rbeta(n, shape1 = beta_shape1, shape2 = beta_shape2)
+
+gamma_df <- data.frame(value = gamma_samples, distribution = "Gamma")
+beta_df <- data.frame(value = beta_samples, distribution = "Beta")
+combined_df <- rbind(gamma_df, beta_df)
+
+hist_plot <- ggplot(combined_df, aes(x = value, fill = distribution)) +
+  geom_histogram(binwidth = 0.1, alpha = 0.5, position = "identity") +
+  labs(title = "Gamma vs Beta Distribution", x = "Value", y = "Frequency", fill = "Distribution") +
+  scale_fill_manual(values = c("Gamma" = "blue", "Beta" = "green"))
+
+print(hist_plot)
+
+mean_gamma <- mean(gamma_samples)
+variance_gamma <- var(gamma_samples)
+mean_beta <- mean(beta_samples)
+variance_beta <- var(beta_samples)
+
+cat("Gamma Distribution:\n")
+cat("Mean:", mean_gamma, "\n")
+cat("Variance:", variance_gamma, "\n")
+
+cat("\nBeta Distribution:\n")
+cat("Mean:", mean_beta, "\n")
+cat("Variance:", variance_beta, "\n")
+
+
+cdf_plot <- ggplot(combined_df, aes(x = value, color = distribution)) +
+  stat_ecdf(geom = "step") +
+  labs(title = "CDF Comparison", x = "Value", y = "Cumulative Probability", color = "Distribution") +
+  scale_color_manual(values = c("Gamma" = "blue", "Beta" = "green"))
+print(cdf_plot)
+
+pdf_gamma <- function(x) dgamma(x, shape = shape_parameter, scale = 1)
+pdf_beta <- function(x) dbeta(x, shape1 = beta_shape1, shape2 = beta_shape2)
+pdf_plot <- ggplot() +
+  stat_function(fun = pdf_gamma, aes(color = "Gamma"), size = 1) +
+  stat_function(fun = pdf_beta, aes(color = "Beta"), size = 1) +
+  labs(title = "PDF Comparison", x = "Value", y = "Density", color = "Distribution") +
+  scale_color_manual(values = c("Gamma" = "blue", "Beta" = "green"))
+
+print(pdf_plot)
+
+
+
+
+####### CHI AND F
+library(fitdistrplus)
+library(ggplot2)
+
+set.seed(123)
+n <- 1000
+chi1 <- rchisq(n, df = 10)
+chi2 <- rchisq(n, df = 6)
+
+relaF <- (chi1 / 10) / (chi2 / 6)
+fitted_F <- fitdist(relaF, "f", start = list(df1 = 10, df2 = 10), method = "mle")
+df_1 <- fitted_F$estimate["df1"]
+df_2 <- fitted_F$estimate["df2"]
+estim_f <- rf(n, df_1, df_2)
+
+hist(chi1, col = "blue", main = "Chi-Square Distribution (df = 10)", xlab = "Value", ylab = "Frequency")
+hist(estim_f, col = "green", main = "Fitted F Distribution", xlab = "Value", ylab = "Frequency")
+
+mean_chi1 <- mean(chi1)
+var_chi1 <- var(chi1)
+mean_estim_f <- mean(estim_f)
+var_estim_f <- var(estim_f)
+
+cat("Mean of Chi-Square:", mean_chi1, "\n")
+cat("Variance of Chi-Square:", var_chi1, "\n")
+cat("Mean of Fitted F:", mean_estim_f, "\n")
+cat("Variance of Fitted F:", var_estim_f, "\n")
+
+x <- seq(0, 5, length.out = 1000)
+
+cdf_estim_f <- pf(x, df_1, df_2)
+pdf_estim_f <- df(x, df_1, df_2)
+
+plot(x, cdf_estim_f, type = "l", col = "red", lwd = 2,
+     main = "CDF and PDF of Fitted F Distribution",
+     xlab = "Value", ylab = "Probability")
+lines(x, pdf_estim_f, col = "blue", lwd = 2)
+legend("topright", legend = c("CDF", "PDF"), col = c("red", "blue"), lwd = c(2, 2))
